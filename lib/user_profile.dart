@@ -1,14 +1,15 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './models/account_overview.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'widgets/widgets.dart';
 
 enum ImageType { asset, url }
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   const UserProfile({
     super.key,
     this.backgroundColor,
@@ -24,12 +25,29 @@ class UserProfile extends StatelessWidget {
   final List<AccountOverview> accountOverview;
 
   @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  File? _image;
+  final picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
           color:
-              backgroundColor?.withOpacity(0.2) ??
+              widget.backgroundColor?.withOpacity(0.2) ??
               Colors.lightBlue.withOpacity(0.2),
           // image: DecorationImage(
           //   image: AssetImage("bg_image.jpg"),
@@ -42,7 +60,45 @@ class UserProfile extends StatelessWidget {
             TopHeader(),
             //profile image
             SizedBox(height: 50),
-            ProfileImage(image: image, imageType: imageType ?? ImageType.url),
+            Stack(
+              children: [
+                // _image != null
+                //     ? Container(
+                //       height: 150,
+                //       width: 150,
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(100),
+                //       ),
+                //       child: ClipRRect(
+                //          borderRadius: BorderRadius.circular(100),
+                //         child:Image.file(_image!)),
+                //     )
+                //     : Text('No image selected'),
+                ProfileImage(
+                  image: widget.image,
+                  imageType: widget.imageType ?? ImageType.url,
+                ),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
+                      onPressed: pickImage,
+                      icon: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          border: Border.all(color: Colors.white, width: 4),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(Icons.edit, color: Colors.white, size: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
             const SizedBox(height: 20),
             //prersonal informationn
             PersonalInformation(),
@@ -67,7 +123,7 @@ class UserProfile extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(left: 20, top: 20),
                         child: Text(
-                          accountTitle,
+                          widget.accountTitle,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -75,9 +131,13 @@ class UserProfile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      for (int i = 0; i < accountOverview.length; i++) ...{
+                      for (
+                        int i = 0;
+                        i < widget.accountOverview.length;
+                        i++
+                      ) ...{
                         InkWell(
-                          onTap: accountOverview[i].onTap,
+                          onTap: widget.accountOverview[i].onTap,
                           child: Ink(
                             child: ListTile(
                               leading: Container(
@@ -85,19 +145,18 @@ class UserProfile extends StatelessWidget {
                                 width: 50,
                                 decoration: BoxDecoration(
                                   color:
-                                      accountOverview[i].color?.withOpacity(
-                                        0.2,
-                                      ) ??
+                                      widget.accountOverview[i].color
+                                          ?.withOpacity(0.2) ??
                                       Colors.lightBlue.withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Icon(
-                                  accountOverview[i].icon,
-                                  color: accountOverview[i].color,
+                                  widget.accountOverview[i].icon,
+                                  color: widget.accountOverview[i].color,
                                 ),
                               ),
                               title: Text(
-                                accountOverview[i].title,
+                                widget.accountOverview[i].title,
                                 style: TextStyle(fontSize: 18),
                               ),
                               trailing: Icon(Icons.arrow_forward_ios),
@@ -112,102 +171,6 @@ class UserProfile extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class PersonalInformation extends StatelessWidget {
-  const PersonalInformation({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Abdifatah Sharif',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Text('+2526171234567'),
-      ],
-    );
-  }
-}
-
-class ProfileImage extends StatelessWidget {
-  const ProfileImage({super.key, required this.image, required this.imageType});
-  final String? image;
-  final ImageType imageType;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Platform.isAndroid
-            ? showDialog(
-              context: context,
-              builder:
-                  (context) => AlertDialog(
-                    title:
-                        image == null
-                            ? Text('No image')
-                            : imageType == ImageType.asset
-                            ? Image.asset('')
-                            : Image.network(image!),
-                  ),
-            )
-            : showCupertinoDialog(
-              context: context,
-              builder:
-                  (context) => CupertinoAlertDialog(
-                    title:
-                        image == null
-                            ? Text('No image')
-                            : imageType == ImageType.asset
-                            ? Image.asset('')
-                            : Image.network(image!),
-                  ),
-            );
-      },
-      child: Container(
-        height: 125,
-        width: 125,
-        decoration: BoxDecoration(
-          // color: Colors.amber,
-          border: Border.all(color: Colors.white, width: 5),
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child:
-            image == null
-                ? Text('no image')
-                : ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child:
-                      imageType == ImageType.asset
-                          ? Image.asset('')
-                          : Image.network(image!),
-                ),
-      ),
-    );
-  }
-}
-
-class TopHeader extends StatelessWidget {
-  const TopHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        'Profile',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      trailing: Container(
-        height: 50,
-        width: 50,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(50),
         ),
       ),
     );
