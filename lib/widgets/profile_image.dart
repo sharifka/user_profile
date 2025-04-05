@@ -1,14 +1,13 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../user_profile.dart';
 
 class ProfileImage extends StatelessWidget {
   const ProfileImage({super.key, required this.image, required this.imageType});
-  final String? image;
+  // final String? image;
+  final File? image;
   final ImageType imageType;
   @override
   Widget build(BuildContext context) {
@@ -20,11 +19,14 @@ class ProfileImage extends StatelessWidget {
               builder:
                   (context) => AlertDialog(
                     title:
-                        image == null
-                            ? Text('No image')
-                            : imageType == ImageType.asset
-                            ? Image.asset('')
-                            : Image.network(image!),
+                        image != null
+                            ? Image.file(image!, fit: BoxFit.cover)
+                            : Center(child: Text('No image')),
+                    // image == null
+                    //     ? Text('No image')
+                    //     : imageType == ImageType.asset
+                    //     ? Image.asset('')
+                    //     : Image.network(image!),
                   ),
             )
             : showCupertinoDialog(
@@ -32,11 +34,14 @@ class ProfileImage extends StatelessWidget {
               builder:
                   (context) => CupertinoAlertDialog(
                     title:
-                        image == null
-                            ? Text('No image')
-                            : imageType == ImageType.asset
-                            ? Image.asset('')
-                            : Image.network(image!),
+                        image != null
+                            ? Image.file(image!, fit: BoxFit.cover)
+                            : Center(child: Text('No image')),
+                    // image == null
+                    //     ? Text('No image')
+                    //     : imageType == ImageType.asset
+                    //     ? Image.asset('')
+                    //     : Image.network(image!),
                   ),
             );
       },
@@ -48,16 +53,22 @@ class ProfileImage extends StatelessWidget {
           border: Border.all(color: Colors.white, width: 5),
           borderRadius: BorderRadius.circular(100),
         ),
-        child:
-            image == null
-                ? Text('no image')
-                : ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child:
-                      imageType == ImageType.asset
-                          ? Image.asset('')
-                          : Image.network(image!),
-                ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child:
+              image != null
+                  ? Image.file(image!, fit: BoxFit.cover)
+                  : Center(child: Text('No image')),
+        ),
+        // image == null
+        //     ? Text('no image')
+        //     : ClipRRect(
+        //       borderRadius: BorderRadius.circular(100),
+        //       child:
+        //           imageType == ImageType.asset
+        //               ? Image.asset('')
+        //               : Image.network(image!),
+        // ),
       ),
     );
   }

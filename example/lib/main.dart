@@ -30,6 +30,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: UserProfile(
+        profileType: 'student',
         backgroundColor: Colors.pink,
         image:
             'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',

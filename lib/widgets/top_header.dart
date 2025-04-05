@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 
 class TopHeader extends StatelessWidget {
-  const TopHeader({super.key});
-
+  const TopHeader({super.key, this.onTap});
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -23,7 +22,7 @@ class TopHeader extends StatelessWidget {
             return [
               for (int i = 0; i < 1; i++) ...{
                 PopupMenuItem(
-                  onTap: () {},
+                  onTap: onTap,
                   child: ListTile(
                     leading: Icon(Icons.arrow_back_ios),
                     title: Text('Back'),
