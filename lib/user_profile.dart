@@ -19,6 +19,7 @@ class UserProfile extends StatefulWidget {
     required this.accountTitle,
     required this.accountOverview,
     required this.profileType,
+    required this.profileInformationCard,
   });
   final void Function()? onTap;
   final String? image;
@@ -26,6 +27,7 @@ class UserProfile extends StatefulWidget {
   final String accountTitle;
   final Color? backgroundColor;
   final List<AccountOverview> accountOverview;
+  final List<ProfileInformationCard> profileInformationCard;
   final String profileType;
 
   @override
@@ -79,11 +81,11 @@ class _UserProfileState extends State<UserProfile> {
                       color: Colors.white54,
                       border: Border.all(color: Colors.grey, width: 1.2),
                       boxShadow: [
-                        // BoxShadow(
-                        //   color: Colors.grey,
-                        //   blurRadius: 5,
-                        //   spreadRadius: -7,
-                        // ),
+                        BoxShadow(
+                          color: Colors.white,
+                          blurRadius: 5,
+                          spreadRadius: -7,
+                        ),
                       ],
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -97,26 +99,19 @@ class _UserProfileState extends State<UserProfile> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        ListTile(
-                          title: Text('Date of Birth'),
-                          subtitle: Text('1999'),
-                        ),
-                        Divider(),
-                        ListTile(
-                          title: Text('Date of Birth'),
-                          subtitle: Text('1999'),
-                        ),
-                        Divider(),
-                        ListTile(
-                          title: Text('Date of Birth'),
-                          subtitle: Text('1999'),
-                        ),
-                        Divider(),
-                        ListTile(
-                          title: Text('Date of Birth'),
-                          subtitle: Text('1999'),
-                        ),
-                        Divider(),
+                        for (
+                          int i = 0;
+                          i < widget.profileInformationCard.length;
+                          i++
+                        ) ...{
+                          ProfileInformationCard(
+                            title:
+                                widget.profileInformationCard?[i].title ?? '',
+                            subtitle:
+                                widget.profileInformationCard?[i].subtitle ??
+                                '',
+                          ),
+                        },
                       ],
                     ),
                   ),
@@ -275,6 +270,34 @@ class _UserProfileState extends State<UserProfile> {
                   ],
                 ),
               ),
+    );
+  }
+}
+
+class ProfileInformationCard extends StatelessWidget {
+  const ProfileInformationCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
+  final String title;
+  final String subtitle;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            title,
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+          ),
+          subtitle: Text(subtitle),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          child: Divider(),
+        ),
+      ],
     );
   }
 }

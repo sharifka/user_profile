@@ -36,6 +36,13 @@ class HomeScreen extends StatelessWidget {
             'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
         imageType: ImageType.url,
         accountTitle: 'Account Overview',
+        profileInformationCard: [
+          ProfileInformationCard(title: 'Date of Birth', subtitle: '1999'),
+          ProfileInformationCard(
+            title: 'Place Of Birth',
+            subtitle: 'Mogadishu',
+          ),
+        ],
         accountOverview: [
           AccountOverview(
             icon: Icons.person,
