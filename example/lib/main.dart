@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:user_profile/models/account_overview.dart';
+import 'package:user_profile/models/profile_details.dart';
 import 'package:user_profile/user_profile.dart';
 
 void main() {
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       title: 'User Profile',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -30,37 +31,37 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: UserProfile(
-        profileType: 'student',
-        backgroundColor: Colors.pink,
-        image:
+        onTapBack: () {
+          print('on tap back');
+        },
+        backgroundColor: Colors.blue,
+        name: 'Abdifatah Sharif Mohamed',
+        tell: '+25261899887766',
+        email: 'Sharifka@gmail.com',
+        urlImage:
             'https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250',
-        imageType: ImageType.url,
-        accountTitle: 'Account Overview',
-        profileInformationCard: [
-          ProfileInformationCard(title: 'Date of Birth', subtitle: '1999'),
-          ProfileInformationCard(
-            title: 'Place Of Birth',
-            subtitle: 'Mogadishu',
-          ),
-        ],
-        accountOverview: [
-          AccountOverview(
+        assetImage: 'assets/bg_image.jpg',
+        imageType: ImageType.upload,
+        circleImageHeight: 125,
+        circleImageWidth: 125,
+        accountTitle: 'Profile Details',
+        profileDetails: [
+          ProfileDetails(
             icon: Icons.person,
             title: 'My Profile',
             color: Colors.lightBlue,
           ),
-          AccountOverview(
+          ProfileDetails(
             icon: Icons.sports_basketball,
             title: 'My Order',
             color: Colors.amber,
           ),
-          AccountOverview(
+          ProfileDetails(
             icon: Icons.monetization_on,
             title: 'Refund',
             color: Colors.lightGreen,
           ),
-
-          AccountOverview(
+          ProfileDetails(
             onTap: () {
               showDialog(
                 context: context,
