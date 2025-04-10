@@ -2,7 +2,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import './models/account_overview.dart';
+import 'models/profile_details.dart';
 import 'package:image_picker/image_picker.dart';
 import 'widgets/widgets.dart';
 
